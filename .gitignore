@@ -11,11 +11,15 @@
 .mtj.tmp/
 
 # Package Files #
+*.jar
 *.war
 *.ear
-*.zip
+#*.zip
 *.tar.gz
 *.rar
+
+# Directories
+wildfly-11.0.0.Final/
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
@@ -26,3 +30,4 @@ hs_err_pid*
 /App/PronosticadorRusia2018/PronosticadorRusia2018-war/dist/
 /App/PronosticadorRusia2018/PronosticadorRusia2018-ejb/dist/
 /App/PronosticadorRusia2018/PronosticadorRusia2018-ejb/build/
+/App/PronosticadorRusia2018/build/
