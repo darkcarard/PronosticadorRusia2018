@@ -1,0 +1,32 @@
+<ui:composition template="/WEB-INF/Plantillas/plantillaLogin.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+>
+     <ui:define name="content">
+         
+         <p:growl id="msg" showDetail="true" life="4000" />
+		<p:panel id="loginPnl" header="Ingreso al Sistema"
+			style="width: 350px; margin: 0 auto;">
+			<h:panelGrid id="loginPanel" columns="2" cellpadding="5">
+				<h:outputText value="Usuario" />
+                                <p:inputText id="usuario" value="#{loginBean.usuario}"></p:inputText>
+				<p:spacer /><p:spacer />	
+				<h:outputText value="Clave" />
+                                <p:password id="clave" value="#{loginBean.clave}" feedback="false"></p:password>
+				<p:message for="clave"></p:message>
+			</h:panelGrid>
+			<h:panelGrid columns="1" cellpadding="10" width="100%">
+                            <p:commandButton id="loginButton" action="#{loginBean.login()}"
+					value="Ingresar" update="loginForm" ajax="true" style="float: right;">
+				</p:commandButton>
+			</h:panelGrid>
+		</p:panel>
+		<p:blockUI block="loginPnl" trigger="loginButton">
+			<p:graphicImage value="resources/images/loader.gif" />
+		</p:blockUI>
+         
+     </ui:define>
+</ui:composition>
