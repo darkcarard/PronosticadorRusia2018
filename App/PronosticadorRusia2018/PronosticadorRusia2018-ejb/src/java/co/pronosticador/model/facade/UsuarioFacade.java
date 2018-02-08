@@ -8,7 +8,10 @@ package co.pronosticador.model.facade;
 import co.pronosticador.model.entity.Usuario;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQuery;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,4 +32,23 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
         super(Usuario.class);
     }
     
+    public boolean validarUsuario(Usuario usuario){
+        Boolean resultado = false;
+        
+        Query query = em.createNamedQuery("Usuario.findByUsarioClave");
+        query.setParameter("id", usuario.getId());
+        query.setParameter("clave", usuario.getClave());
+        try{
+            query.getSingleResult();
+            resultado = true;
+        }catch(NoResultException nre){
+            resultado = false;
+            nre.printStackTrace();
+        }catch(Exception e){
+            resultado = false;
+            e.printStackTrace();
+        }
+                        
+        return resultado;
+    }
 }
