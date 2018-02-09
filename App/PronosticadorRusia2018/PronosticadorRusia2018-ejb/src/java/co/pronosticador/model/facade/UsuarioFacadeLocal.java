@@ -30,4 +30,6 @@ public interface UsuarioFacadeLocal {
 
     int count();
     
+    boolean validarUsuario(Usuario usuario);
+    
 }
