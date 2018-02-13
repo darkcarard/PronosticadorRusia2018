@@ -5,13 +5,13 @@ import co.pronosticador.view.delegate.SeguridadDelegate;
 import co.pronosticador.view.util.JSFUtils;
 import java.io.Serializable;
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
-@ManagedBean(name = "loginBean")
+@Named(value = "loginBean")
 @SessionScoped
 public class LoginBean implements Serializable {
     
@@ -45,10 +45,13 @@ public class LoginBean implements Serializable {
         usuarioTmp.setClave(this.clave);
         
         if(seguridadDelegate.validarUsuario(usuarioTmp)){
-             HttpSession session = JSFUtils.GetSession();
-        session.setAttribute("usuario", usuarioTmp); 
+            usuarioTmp = seguridadDelegate.getUsuario(usuarioTmp);
+            HttpSession session = JSFUtils.GetSession();
+            session.setAttribute("usuario", usuarioTmp); 
+            System.out.println("*************Usuario logueado");
             return "loginOK";  
         }else{
+            System.out.println("*************Usuario erróneo");
             FacesContext.getCurrentInstance()
                     .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
                     "Invalid Login!",

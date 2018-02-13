@@ -32,8 +32,9 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
         super(Usuario.class);
     }
     
+    @Override
     public boolean validarUsuario(Usuario usuario){
-        Boolean resultado = false;
+        Boolean resultado;
         
         Query query = em.createNamedQuery("Usuario.findByUsarioClave");
         query.setParameter("id", usuario.getId());
@@ -43,10 +44,10 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
             resultado = true;
         }catch(NoResultException nre){
             resultado = false;
-            nre.printStackTrace();
+            //TODO mostrar mensaje en el log
         }catch(Exception e){
+            //TODO mostrar mensaje en el log
             resultado = false;
-            e.printStackTrace();
         }
                         
         return resultado;

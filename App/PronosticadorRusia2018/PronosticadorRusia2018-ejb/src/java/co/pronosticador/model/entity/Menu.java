@@ -148,7 +148,7 @@ public class Menu implements Serializable {
 
     @Override
     public String toString() {
-        return "co.pronosticador.model.entities.Menu[ id=" + id + " ]";
-    }
+        return "Menu{" + "id=" + id + ", padre=" + padre + ", nombre=" + nombre + ", outcome=" + outcome + ", descripcion=" + descripcion + ", rolCollection=" + rolCollection + '}';
+    }    
     
 }
