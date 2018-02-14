@@ -36,7 +36,7 @@ public class MenuBean implements Serializable {
         Usuario usuarioTmp = JSFUtils.getUsuario();
         List<Menu> menu = seguridadDelegate.generarMenu(usuarioTmp);
         
-        List<Menu> padres = menu.stream().filter(m -> m.getPadre() == null).collect(Collectors.toList());
+        List<Menu> padres = menu.stream().filter(m -> m.getPadre() == 0).collect(Collectors.toList());
         
         model = new DefaultMenuModel();
         

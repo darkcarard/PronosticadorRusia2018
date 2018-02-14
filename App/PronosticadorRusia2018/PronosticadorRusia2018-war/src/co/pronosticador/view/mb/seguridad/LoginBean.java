@@ -46,16 +46,12 @@ public class LoginBean implements Serializable {
         
         if(seguridadDelegate.validarUsuario(usuarioTmp)){
             usuarioTmp = seguridadDelegate.getUsuario(usuarioTmp);
-            HttpSession session = JSFUtils.GetSession();
-            session.setAttribute("usuario", usuarioTmp); 
+            JSFUtils.setAtributoSesion(usuarioTmp, "usuario");
             System.out.println("*************Usuario logueado");
             return "loginOK";  
         }else{
             System.out.println("*************Usuario erróneo");
-            FacesContext.getCurrentInstance()
-                    .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-                    "Invalid Login!",
-                    "Please Try Again!"));
+            JSFUtils.showWarningMessage("¡Error ingresando a la aplicación!", "El usuario o la clave no coinciden");
             return "";
         }
     }

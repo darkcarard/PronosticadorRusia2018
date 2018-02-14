@@ -1,6 +1,7 @@
 package co.pronosticador.view.util;
 
 import co.pronosticador.model.entity.Usuario;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
@@ -17,4 +18,16 @@ public class JSFUtils {
         return  (Usuario)session.getAttribute("usuario");
     }
     
+    public static void setAtributoSesion(Object valor, String nombre){
+        HttpSession session = (HttpSession)FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(false);
+            session.setAttribute(nombre, valor); 
+    }
+    
+    public static void showWarningMessage(String resumen, String detalle){
+        FacesContext.getCurrentInstance()
+                    .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    resumen,
+                    detalle));
+    }
 }
