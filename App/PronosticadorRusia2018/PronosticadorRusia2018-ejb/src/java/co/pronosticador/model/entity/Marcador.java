@@ -42,6 +42,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Marcador.findByHoraModificacion", query = "SELECT m FROM Marcador m WHERE m.horaModificacion = :horaModificacion")})
 public class Marcador implements Serializable {
 
+    @JoinColumn(name = "partido", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Partido partido;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -213,6 +217,14 @@ public class Marcador implements Serializable {
     @Override
     public String toString() {
         return "co.pronosticador.model.entities.Marcador[ id=" + id + " ]";
+    }
+
+    public Partido getPartido() {
+        return partido;
+    }
+
+    public void setPartido(Partido partido) {
+        this.partido = partido;
     }
     
 }

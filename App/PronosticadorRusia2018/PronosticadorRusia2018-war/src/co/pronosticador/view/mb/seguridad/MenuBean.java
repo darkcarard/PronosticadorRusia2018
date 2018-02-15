@@ -6,7 +6,6 @@ import co.pronosticador.view.delegate.SeguridadDelegate;
 import co.pronosticador.view.util.JSFUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -53,7 +52,8 @@ public class MenuBean implements Serializable {
            
             for(Menu menuHijo : hijos){
                 DefaultMenuItem item = new DefaultMenuItem(menuHijo.getNombre());
-                item.setOutcome(menuHijo.getOutcome());
+                if (menuHijo.getOutcome() != null && !menuHijo.getOutcome().isEmpty()) 
+                    item.setOutcome(menuHijo.getOutcome());
                 item.setIcon("ui-icon-home"); //TODO adicionar el icono a la entidad
                 firstSubmenu.addElement(item);
             }

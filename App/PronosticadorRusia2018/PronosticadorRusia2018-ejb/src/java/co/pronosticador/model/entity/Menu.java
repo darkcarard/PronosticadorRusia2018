@@ -40,6 +40,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Menu.findByDescripcion", query = "SELECT m FROM Menu m WHERE m.descripcion = :descripcion")})
 public class Menu implements Serializable {
 
+    @Size(max = 50)
+    @Column(name = "icono")
+    private String icono;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -150,5 +154,13 @@ public class Menu implements Serializable {
     public String toString() {
         return "Menu{" + "id=" + id + ", padre=" + padre + ", nombre=" + nombre + ", outcome=" + outcome + ", descripcion=" + descripcion + ", rolCollection=" + rolCollection + '}';
     }    
+
+    public String getIcono() {
+        return icono;
+    }
+
+    public void setIcono(String icono) {
+        this.icono = icono;
+    }
     
 }
