@@ -5,8 +5,10 @@ import co.pronosticador.model.entity.Usuario;
 import co.pronosticador.view.delegate.SeguridadDelegate;
 import co.pronosticador.view.util.JSFUtils;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -35,21 +37,26 @@ public class MenuBean implements Serializable {
 
         Usuario usuarioTmp = JSFUtils.getUsuario();
         List<Menu> menu = seguridadDelegate.generarMenu(usuarioTmp);
+        List<Menu> padres = new ArrayList<>();
         
-        List<Menu> padres = menu.stream().filter(m -> m.getPadre() == 0).collect(Collectors.toList());
+        if (menu != null){
+            padres = menu.stream()
+                    .filter(m -> m.getPadre() == null).collect(Collectors.toList());
+        }
         
         model = new DefaultMenuModel();
         
         for(Menu padre : padres){
            DefaultSubMenu firstSubmenu = new DefaultSubMenu(padre.getNombre());
-           List<Menu> hijos = menu.stream().filter(m -> m.getPadre() == padre.getId()).collect(Collectors.toList());
+           List<Menu> hijos = menu.stream().filter(m -> Objects.equals(m.getPadre(), 
+                   padre.getId())).collect(Collectors.toList());
            
-            System.out.println("Hijos size: " + hijos.size());
-            DefaultMenuItem item = new DefaultMenuItem(hijos.get(0).getNombre());
-            item.setUrl("http://www.primefaces.org");
-            item.setIcon("ui-icon-home");
-            firstSubmenu.addElement(item);
-         
+            for(Menu menuHijo : hijos){
+                DefaultMenuItem item = new DefaultMenuItem(menuHijo.getNombre());
+                item.setOutcome(menuHijo.getOutcome());
+                item.setIcon("ui-icon-home"); //TODO adicionar el icono a la entidad
+                firstSubmenu.addElement(item);
+            }
             model.addElement(firstSubmenu);
         }                
         
