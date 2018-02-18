@@ -5,7 +5,6 @@ import co.pronosticador.model.entity.Usuario;
 import co.pronosticador.view.delegate.SeguridadDelegate;
 import co.pronosticador.view.util.JSFUtils;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -36,31 +35,33 @@ public class MenuBean implements Serializable {
 
         Usuario usuarioTmp = JSFUtils.getUsuario();
         List<Menu> menu = seguridadDelegate.generarMenu(usuarioTmp);
-        List<Menu> padres = new ArrayList<>();
+        List<Menu> padres;
         
         if (menu != null){
             padres = menu.stream()
                     .filter(m -> m.getPadre() == null).collect(Collectors.toList());
+            model = new DefaultMenuModel();
+        
+            for(Menu padre : padres){
+               DefaultSubMenu subMenu = new DefaultSubMenu(padre.getNombre());
+               subMenu.setIcon(padre.getIcono());
+               List<Menu> hijos = menu.stream().filter(m -> Objects.equals(m.getPadre(), 
+                       padre.getId())).collect(Collectors.toList());
+
+               hijos.stream().map((menuHijo) -> {
+                   DefaultMenuItem item = new DefaultMenuItem(menuHijo.getNombre());
+                   if (menuHijo.getOutcome() != null && !menuHijo.getOutcome().isEmpty())
+                       item.setOutcome(menuHijo.getOutcome());
+                   item.setIcon(menuHijo.getIcono());
+                    return item;
+                }).forEachOrdered((item) -> {
+                    subMenu.addElement(item);
+                });
+                model.addElement(subMenu);
+            }            
         }
         
-        model = new DefaultMenuModel();
-        
-        for(Menu padre : padres){
-           DefaultSubMenu firstSubmenu = new DefaultSubMenu(padre.getNombre());
-           List<Menu> hijos = menu.stream().filter(m -> Objects.equals(m.getPadre(), 
-                   padre.getId())).collect(Collectors.toList());
-           
-            for(Menu menuHijo : hijos){
-                DefaultMenuItem item = new DefaultMenuItem(menuHijo.getNombre());
-                if (menuHijo.getOutcome() != null && !menuHijo.getOutcome().isEmpty()) 
-                    item.setOutcome(menuHijo.getOutcome());
-                item.setIcon("ui-icon-home"); //TODO adicionar el icono a la entidad
-                firstSubmenu.addElement(item);
-            }
-            model.addElement(firstSubmenu);
-        }                
-        
-        
+            
     }
 
     public MenuModel getModel() {

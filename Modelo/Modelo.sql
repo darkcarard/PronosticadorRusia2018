@@ -167,6 +167,7 @@ CREATE INDEX `fk_usuario_rol_idx` ON `pronosticador_rusia_2018`.`usuario` (`rol`
 CREATE TABLE IF NOT EXISTS `pronosticador_rusia_2018`.`marcador` (
   `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador numérico del marcador',
   `usuario` VARCHAR(15) NOT NULL COMMENT 'Usuario que ingresa el marcador',
+  `partido` INT(11) NOT NULL COMMENT 'Partido al que pertenece el marcador',
   `equipo_local` INT(11) NOT NULL COMMENT 'Identificador del equipo local',
   `equipo_visitante` INT(11) NOT NULL COMMENT 'Identificador del equipo visitante',
   `goles_equipo_local` TINYINT(3) NOT NULL COMMENT 'goles del equipo local',
@@ -191,6 +192,11 @@ CREATE TABLE IF NOT EXISTS `pronosticador_rusia_2018`.`marcador` (
     FOREIGN KEY (`usuario`)
     REFERENCES `pronosticador_rusia_2018`.`usuario` (`id`)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_marcador_partido`
+    FOREIGN KEY (`partido`)
+    REFERENCES `pronosticador_rusia_2018`.`partido` (`id`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
@@ -201,6 +207,8 @@ CREATE INDEX `fk_marcador_equipo_local_idx` ON `pronosticador_rusia_2018`.`marca
 CREATE INDEX `fk_marcador_equipo_visitante_idx` ON `pronosticador_rusia_2018`.`marcador` (`equipo_visitante` ASC);
 
 CREATE INDEX `fk_marcador_usuario_idx` ON `pronosticador_rusia_2018`.`marcador` (`usuario` ASC);
+
+CREATE INDEX `fk_marcador_partido_idx` ON `pronosticador_rusia_2018`.`marcador` (`partido` ASC);
 
 
 -- -----------------------------------------------------
@@ -216,7 +224,6 @@ CREATE TABLE IF NOT EXISTS `pronosticador_rusia_2018`.`menu` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COMMENT = 'configuración de los menús de la aplicación';
-
 
 -- -----------------------------------------------------
 -- Table `pronosticador_rusia_2018`.`menu_rol`
