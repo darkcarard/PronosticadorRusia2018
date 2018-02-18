@@ -60,8 +60,6 @@ public class MenuBean implements Serializable {
                 model.addElement(subMenu);
             }            
         }
-        
-            
     }
 
     public MenuModel getModel() {
