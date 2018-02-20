@@ -9,7 +9,8 @@
     
      <p:menubar model="#{menuBean.model}">
         <f:facet name="options">
-            <p:commandButton type="button" value="Salir" icon="fa fa-times-circle" />
+            <p:commandButton value="Salir" icon="fa fa-times-circle" 
+                             action="#{loginBean.logout}"/>
         </f:facet>
     </p:menubar>
     

@@ -23,42 +23,42 @@ public class MenuBean implements Serializable {
 
     @EJB
     SeguridadDelegate seguridadDelegate;
-    
+
     private MenuModel model;
-    
-    
+
     public MenuBean() {
     }
-    
+
     @PostConstruct
-    public void init() {        
+    public void init() {
 
         Usuario usuarioTmp = JSFUtils.getUsuario();
         List<Menu> menu = seguridadDelegate.generarMenu(usuarioTmp);
         List<Menu> padres;
-        
-        if (menu != null){
+
+        if (menu != null) {
             padres = menu.stream()
                     .filter(m -> m.getPadre() == null).collect(Collectors.toList());
             model = new DefaultMenuModel();
-        
-            for(Menu padre : padres){
-               DefaultSubMenu subMenu = new DefaultSubMenu(padre.getNombre());
-               subMenu.setIcon(padre.getIcono());
-               List<Menu> hijos = menu.stream().filter(m -> Objects.equals(m.getPadre(), 
-                       padre.getId())).collect(Collectors.toList());
 
-               hijos.stream().map((menuHijo) -> {
-                   DefaultMenuItem item = new DefaultMenuItem(menuHijo.getNombre());
-                   if (menuHijo.getOutcome() != null && !menuHijo.getOutcome().isEmpty())
-                       item.setOutcome(menuHijo.getOutcome());
-                   item.setIcon(menuHijo.getIcono());
+            for (Menu padre : padres) {
+                DefaultSubMenu subMenu = new DefaultSubMenu(padre.getNombre());
+                subMenu.setIcon(padre.getIcono());
+                List<Menu> hijos = menu.stream().filter(m -> Objects.equals(m.getPadre(),
+                        padre.getId())).collect(Collectors.toList());
+
+                hijos.stream().map((menuHijo) -> {
+                    DefaultMenuItem item = new DefaultMenuItem(menuHijo.getNombre());
+                    if (menuHijo.getOutcome() != null && !menuHijo.getOutcome().isEmpty()) {
+                        item.setOutcome(menuHijo.getOutcome());
+                    }
+                    item.setIcon(menuHijo.getIcono());
                     return item;
                 }).forEachOrdered((item) -> {
                     subMenu.addElement(item);
                 });
                 model.addElement(subMenu);
-            }            
+            }
         }
     }
 
@@ -69,5 +69,4 @@ public class MenuBean implements Serializable {
     public void setModel(MenuModel model) {
         this.model = model;
     }
-            
 }

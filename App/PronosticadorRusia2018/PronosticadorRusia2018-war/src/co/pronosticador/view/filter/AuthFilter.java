@@ -13,38 +13,36 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @WebFilter(filterName = "AuthFilter", urlPatterns = {"*.xhtml"})
-public class AuthFilter implements Filter{
+public class AuthFilter implements Filter {
+
     public AuthFilter() {
     }
- 
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-         
+
     }
- 
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-         try {
- 
-            // check whether session variable is set
+        try {
             HttpServletRequest req = (HttpServletRequest) request;
             HttpServletResponse res = (HttpServletResponse) response;
             HttpSession ses = req.getSession(false);
-            //  allow user to proceed if url is login.xhtml or user logged in or user is accessing any page in //public folder
             String reqURI = req.getRequestURI();
-            if ( reqURI.indexOf("/login.xhtml") >= 0 || (ses != null && ses.getAttribute("usuario") != null)
-                                       || reqURI.indexOf("/public/") >= 0 || reqURI.contains("javax.faces.resource") )
-                   chain.doFilter(request, response);
-            else   // user didn't log in but asking for a page that is not allowed so take user to login page
-                   res.sendRedirect(req.getContextPath() + "/login.xhtml");  // Anonymous user. Redirect to login page
-      }
-     catch(Throwable t) {
-         System.out.println( t.getMessage());
-     }
-    } //doFilter
- 
+            if (reqURI.contains("javax.faces.resource") || reqURI.contains("/login.xhtml")
+                    || (ses != null && ses.getAttribute("usuario") != null)) {
+                chain.doFilter(request, response);
+            } else {
+                res.sendRedirect(req.getContextPath() + "/login.xhtml");
+            }
+        } catch (IOException | ServletException t) {
+            System.out.println(t.getMessage());
+        }
+    }
+
     @Override
     public void destroy() {
-         
+
     }
 }
