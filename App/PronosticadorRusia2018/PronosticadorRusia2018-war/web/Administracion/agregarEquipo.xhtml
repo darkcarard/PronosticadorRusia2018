@@ -1,0 +1,38 @@
+<ui:composition template="/WEB-INF/Plantillas/plantilla.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+
+
+    <ui:define name="content">
+        <p:panel id="agregarEquipoPanel" header="Agregar Equipo">
+            <p:dataTable id="agregarEquipoDataTable" var="equipo" value="#{agregarEquipoBean.equipos}"
+                         emptyMessage="No se ha agregado ningún equipo a la aplicación">
+                <f:facet name="header">Equipos</f:facet>
+
+                <p:column headerText="Escudo">
+                    <h:outputText value="#{equipo.escudo}" />
+                </p:column>
+                
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{equipo.nombre}" />
+                </p:column>
+                
+                <p:column headerText="País">
+                    <h:outputText value="#{equipo.pais.nombre}" />
+                </p:column>
+
+                <p:column headerText="Ciudad" visible="#{equipo.ciudad} neq null">
+                    <h:outputText value="#{equipo.ciudad}" />
+                </p:column>
+                
+
+            </p:dataTable>
+        </p:panel>
+
+
+    </ui:define>
+</ui:composition>
