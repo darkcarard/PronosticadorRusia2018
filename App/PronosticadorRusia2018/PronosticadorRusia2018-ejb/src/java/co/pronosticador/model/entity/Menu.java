@@ -59,6 +59,9 @@ public class Menu implements Serializable {
     @Size(max = 500)
     @Column(name = "descripcion")
     private String descripcion;
+    @Size(max = 50)
+    @Column(name = "icono")
+    private String icono;
     @JoinTable(name = "menu_rol", joinColumns = {
         @JoinColumn(name = "menu", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "rol", referencedColumnName = "id")})
@@ -150,5 +153,13 @@ public class Menu implements Serializable {
     public String toString() {
         return "Menu{" + "id=" + id + ", padre=" + padre + ", nombre=" + nombre + ", outcome=" + outcome + ", descripcion=" + descripcion + ", rolCollection=" + rolCollection + '}';
     }    
+
+    public String getIcono() {
+        return icono;
+    }
+
+    public void setIcono(String icono) {
+        this.icono = icono;
+    }
     
 }

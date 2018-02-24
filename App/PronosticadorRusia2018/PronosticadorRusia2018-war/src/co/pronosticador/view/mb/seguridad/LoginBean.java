@@ -43,14 +43,17 @@ public class LoginBean implements Serializable {
         
         if(seguridadDelegate.validarUsuario(usuarioTmp)){
             usuarioTmp = seguridadDelegate.getUsuario(usuarioTmp);
-            JSFUtils.setAtributoSesion(usuarioTmp, "usuario");
-            System.out.println("*************Usuario logueado");
+            JSFUtils.setSessionAttribute(usuarioTmp, "usuario");
             return "loginOK";  
         }else{
-            System.out.println("*************Usuario erróneo");
-            JSFUtils.showWarningMessage("¡Error ingresando a la aplicación!", "El usuario o la clave no coinciden");
+            JSFUtils.showWarningMessage("¡Error ingresando a la aplicación!",
+                    "El usuario o la clave no coinciden");
             return "";
         }
     }
     
+    public String logout(){
+        JSFUtils.invalidateSession();
+        return "logout";
+    }
 }

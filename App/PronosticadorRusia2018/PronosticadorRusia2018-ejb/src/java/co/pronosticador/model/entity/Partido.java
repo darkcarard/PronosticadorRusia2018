@@ -6,8 +6,10 @@
 package co.pronosticador.model.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,12 +17,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -35,6 +39,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Partido.findByFecha", query = "SELECT p FROM Partido p WHERE p.fecha = :fecha")
     , @NamedQuery(name = "Partido.findByHora", query = "SELECT p FROM Partido p WHERE p.hora = :hora")})
 public class Partido implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "partido")
+    private Collection<Marcador> marcadorCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -146,6 +153,15 @@ public class Partido implements Serializable {
     @Override
     public String toString() {
         return "co.pronosticador.model.entities.Partido[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Marcador> getMarcadorCollection() {
+        return marcadorCollection;
+    }
+
+    public void setMarcadorCollection(Collection<Marcador> marcadorCollection) {
+        this.marcadorCollection = marcadorCollection;
     }
     
 }
